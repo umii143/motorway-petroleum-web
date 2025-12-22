@@ -1,0 +1,71 @@
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { Moon, Sun, Sparkles } from "lucide-react";
+
+function Btn({
+      active,
+        onClick,
+          label,
+            icon,
+}: {
+      active: boolean;
+        onClick: () => void;
+          label: string;
+            icon: React.ReactNode;
+}) {
+      return (
+            <button
+                  type="button"
+                        onClick={onClick}
+                              className={[
+                                        "inline-flex items-center gap-2 px-3 py-2 rounded-xl border transition text-sm",
+                                                active
+                                                          ? "border-[rgb(var(--accent))] bg-[rgb(var(--muted))]"
+                                                                    : "border-[rgb(var(--border))] hover:bg-[rgb(var(--muted))]",
+                              ].join(" ")}
+                                    aria-pressed={active}
+                                        >
+                                              {icon}
+                                                    <span className="hidden sm:inline">{label}</span>
+                                                        </button>
+      );
+}
+
+export function ThemeSwitcher() {
+      const { theme, setTheme } = useTheme();
+        const [mounted, setMounted] = useState(false);
+          useEffect(() => setMounted(true), []);
+            if (!mounted) return null;
+
+              return (
+                    <div className="flex items-center gap-2">
+                          <Btn
+                                  label="Light"
+                                          active={theme === "light"}
+                                                  onClick={() => setTheme("light")}
+                                                          icon={<Sun size={16} />}
+                                                                />
+                                                                      <Btn
+                                                                              label="Dark"
+                                                                                      active={theme === "dark"}
+                                                                                              onClick={() => setTheme("dark")}
+                                                                                                      icon={<Moon size={16} />}
+                                                                                                            />
+                                                                                                                  <Btn
+                                                                                                                          label="Gold"
+                                                                                                                                  active={theme === "gold"}
+                                                                                                                                          onClick={() => setTheme("gold")}
+                                                                                                                                                  icon={<Sparkles size={16} />}
+                                                                                                                                                        />
+                                                                                                                                                            </div>
+              );
+}
+              )
+}
+                              ]}
+      )
+}
+}
+})

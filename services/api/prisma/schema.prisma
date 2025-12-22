@@ -1,0 +1,102 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  role         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Station {
+  id        String   @id @default(cuid())
+  name      String
+  address   String?
+  timezone  String?
+  createdAt DateTime @default(now())
+  pumps     Pump[]
+  tanks     Tank[]
+}
+
+model Pump {
+  id        String   @id @default(cuid())
+  stationId String
+  pumpNumber Int
+  status    String   @default("idle")
+  station   Station  @relation(fields: [stationId], references: [id])
+  nozzles   Nozzle[]
+}
+
+model Nozzle {
+  id           String @id @default(cuid())
+  pumpId       String
+  nozzleNumber Int
+  fuelType     String
+  price        Float
+  pump         Pump   @relation(fields: [pumpId], references: [id])
+}
+
+model Tank {
+  id            String  @id @default(cuid())
+  stationId     String
+  fuelType      String
+  capacityLiters Float
+  currentLiters  Float
+  station       Station @relation(fields: [stationId], references: [id])
+}
+
+model Transaction {
+  id            String   @id @default(cuid())
+  stationId     String
+  pumpId        String
+  nozzleId      String
+  userId        String?
+  startTime     DateTime
+  endTime       DateTime?
+  liters        Float
+  unitPrice     Float
+  totalAmount   Float
+  paymentMethod String
+  paymentToken  String?
+  receiptId     String?
+}
+
+model Shift {
+  id        String   @id @default(cuid())
+  stationId String
+  userId    String
+  startTime DateTime
+  endTime   DateTime?
+  totals    Json?
+}
+
+model Telemetry {
+  id        String   @id @default(cuid())
+  deviceId  String
+  stationId String
+  type      String
+  value     Float
+  timestamp DateTime @default(now())
+}
+
+model Alert {
+  id         String   @id @default(cuid())
+  stationId  String
+  tankId     String?
+  type       String   // e.g., "low_stock", "leak_detected"
+  message    String
+  level      String   @default("warning") // warning | critical
+  resolved   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  resolvedAt DateTime?
+}
+
