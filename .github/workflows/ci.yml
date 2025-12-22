@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    name: Build & Test API
+    services:
+      postgres:
+        image: postgres:15
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: motorway
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install (api)
+        working-directory: ./services/api
+        run: npm ci
+      - name: Generate Prisma client
+        working-directory: ./services/api
+        run: npx prisma generate
+      - name: Apply migrations (deploy)
+        working-directory: ./services/api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/motorway
+        run: |
+          # Apply committed migrations to the ephemeral CI DB
+          npx prisma migrate deploy
+      - name: Build (api)
+        working-directory: ./services/api
+        run: npm run build
+      - name: Install test deps
+        working-directory: ./services/api
+        run: npm ci
+      - name: Run tests (api)
+        working-directory: ./services/api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/motorway
+        run: npm test
+      - name: (Optional) Run migrations
+        if: false
+        working-directory: ./services/api
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/motorway
+        run: |
+          # Uncomment and enable when you want CI to apply migrations against a test DB
+          # npx prisma migrate deploy --preview-feature
+          echo "Migrations step is disabled by default in CI. See docs/MIGRATIONS.md for guidance."

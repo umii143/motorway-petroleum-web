@@ -1,0 +1,76 @@
+-- Initial migration for motorway API
+
+CREATE TABLE "User" (
+  id TEXT PRIMARY KEY,
+  email TEXT UNIQUE NOT NULL,
+  name TEXT,
+  role TEXT NOT NULL,
+  passwordHash TEXT NOT NULL,
+  createdAt TIMESTAMP WITH TIME ZONE DEFAULT now(),
+  updatedAt TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE TABLE "Station" (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  address TEXT,
+  timezone TEXT,
+  createdAt TIMESTAMP WITH TIME ZONE DEFAULT now()
+);
+
+CREATE TABLE "Pump" (
+  id TEXT PRIMARY KEY,
+  stationId TEXT NOT NULL REFERENCES "Station"(id) ON DELETE CASCADE,
+  pumpNumber INTEGER NOT NULL,
+  status TEXT DEFAULT 'idle'
+);
+
+CREATE TABLE "Nozzle" (
+  id TEXT PRIMARY KEY,
+  pumpId TEXT NOT NULL REFERENCES "Pump"(id) ON DELETE CASCADE,
+  nozzleNumber INTEGER NOT NULL,
+  fuelType TEXT NOT NULL,
+  price DOUBLE PRECISION NOT NULL
+);
+
+CREATE TABLE "Tank" (
+  id TEXT PRIMARY KEY,
+  stationId TEXT NOT NULL REFERENCES "Station"(id) ON DELETE CASCADE,
+  fuelType TEXT NOT NULL,
+  capacityLiters DOUBLE PRECISION NOT NULL,
+  currentLiters DOUBLE PRECISION NOT NULL
+);
+
+CREATE TABLE "Transaction" (
+  id TEXT PRIMARY KEY,
+  stationId TEXT NOT NULL,
+  pumpId TEXT NOT NULL,
+  nozzleId TEXT NOT NULL,
+  userId TEXT,
+  startTime TIMESTAMP WITH TIME ZONE NOT NULL,
+  endTime TIMESTAMP WITH TIME ZONE,
+  liters DOUBLE PRECISION NOT NULL,
+  unitPrice DOUBLE PRECISION NOT NULL,
+  totalAmount DOUBLE PRECISION NOT NULL,
+  paymentMethod TEXT NOT NULL,
+  paymentToken TEXT,
+  receiptId TEXT
+);
+
+CREATE TABLE "Shift" (
+  id TEXT PRIMARY KEY,
+  stationId TEXT NOT NULL,
+  userId TEXT NOT NULL,
+  startTime TIMESTAMP WITH TIME ZONE NOT NULL,
+  endTime TIMESTAMP WITH TIME ZONE,
+  totals JSONB
+);
+
+CREATE TABLE "Telemetry" (
+  id TEXT PRIMARY KEY,
+  deviceId TEXT NOT NULL,
+  stationId TEXT NOT NULL,
+  type TEXT NOT NULL,
+  value DOUBLE PRECISION NOT NULL,
+  timestamp TIMESTAMP WITH TIME ZONE DEFAULT now()
+);

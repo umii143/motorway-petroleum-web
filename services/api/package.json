@@ -1,0 +1,30 @@
+{
+  "name": "motorway-api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc -p .",
+    "start": "node dist/index.js",
+    "lint": "eslint . --ext .ts",
+    "test": "jest --passWithNoTests --runInBand",
+    "prisma:generate": "prisma generate",
+    "migrate:dev": "prisma migrate dev",
+    "prisma:deploy": "prisma generate && prisma migrate deploy"
+  },
+  "dependencies": {
+    "fastify": "^4.0.0",
+    "@fastify/jwt": "^6.0.0",
+    "@prisma/client": "^5.0.0",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "prisma": "^5.0.0"
+  }
+}
