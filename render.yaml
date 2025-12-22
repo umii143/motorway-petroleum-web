@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: motorway-api
+    env: node
+    region: oregon
+    plan: free
+    branch: main
+    buildCommand: "npm ci && npx prisma generate && npm run build"
+    startCommand: "npm start"
+    repo: $REPO # replace with your GitHub repo slug (owner/repo)
+    envVars:
+      - key: DATABASE_URL
+        sync: true
+      - key: JWT_SECRET
+        sync: true
+    healthCheckPath: /health
