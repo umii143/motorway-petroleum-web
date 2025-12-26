@@ -25,11 +25,13 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-2">
+      <header className="page-header">
         <p className="text-xs uppercase tracking-[0.25em] text-blue-600">
-          Islamabad Motorway M-2
+          {state.station.location || "Pakistan"}
         </p>
-        <h1 className="text-3xl font-semibold text-slate-900">Dashboard</h1>
+        <h1 className="text-3xl font-semibold text-slate-900">
+          {state.station.name || "Fuel Station Dashboard"}
+        </h1>
         <p className="text-sm text-slate-500">
           Daily overview with profit/loss and operational alerts.
         </p>

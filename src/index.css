@@ -18,6 +18,14 @@
     @apply rounded-3xl border border-white/80 bg-white/80 shadow-[0_30px_80px_rgba(15,23,42,0.12)] backdrop-blur-2xl;
   }
 
+  .page-header {
+    @apply flex flex-col gap-2 rounded-3xl border border-white/70 bg-white/70 px-6 py-5 shadow-[0_20px_50px_rgba(15,23,42,0.08)];
+  }
+
+  .section-title {
+    @apply text-sm font-semibold text-slate-900;
+  }
+
   .nav-item {
     @apply flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10;
   }
