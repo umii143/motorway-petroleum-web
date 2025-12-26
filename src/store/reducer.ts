@@ -7,6 +7,12 @@ export function reducer(state: AppState, action: Action): AppState {
       return action.payload;
     case "RESET":
       return action.payload;
+    case "ADD_TANK":
+      return { ...state, tanks: [...state.tanks, action.payload] };
+    case "ADD_NOZZLE":
+      return { ...state, nozzles: [...state.nozzles, action.payload] };
+    case "ADD_PRODUCT":
+      return { ...state, products: [...state.products, action.payload] };
     case "ADD_SALE": {
       const sale: Sale = action.payload;
       const updatedTanks = state.tanks.map((tank) => {

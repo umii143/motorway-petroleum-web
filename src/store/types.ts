@@ -125,6 +125,9 @@ export interface AppState {
 
 export type Action =
   | { type: "SEED"; payload: AppState }
+  | { type: "ADD_TANK"; payload: Tank }
+  | { type: "ADD_NOZZLE"; payload: Nozzle }
+  | { type: "ADD_PRODUCT"; payload: Product }
   | { type: "ADD_SALE"; payload: Sale }
   | { type: "ADD_EXPENSE"; payload: Expense }
   | { type: "ADD_BANK_DEPOSIT"; payload: BankDeposit }
