@@ -3,9 +3,10 @@
 Hyper-premium fuel station management system web app.
 
 ## Tech Stack
-- React
+- React + TypeScript
 - Tailwind CSS
 - Lucide React Icons
+- React Router
 
 ## Getting Started
 

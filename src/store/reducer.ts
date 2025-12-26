@@ -7,6 +7,8 @@ export function reducer(state: AppState, action: Action): AppState {
       return action.payload;
     case "RESET":
       return action.payload;
+    case "UPDATE_STATION":
+      return { ...state, station: action.payload };
     case "ADD_TANK":
       return { ...state, tanks: [...state.tanks, action.payload] };
     case "ADD_NOZZLE":

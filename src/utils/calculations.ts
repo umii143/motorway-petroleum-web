@@ -60,5 +60,11 @@ export function computeAlerts(state: AppState) {
     }
   });
 
+  state.products.forEach((product) => {
+    if (product.stock <= 10) {
+      alerts.push(`Low product stock: ${product.name}`);
+    }
+  });
+
   return alerts;
 }

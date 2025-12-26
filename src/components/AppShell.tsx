@@ -30,7 +30,7 @@ const navItems = [
 ];
 
 export default function AppShell() {
-  const { resetDemo } = useStore();
+  const { resetDemo, state } = useStore();
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-ice to-blue-50 text-slate-900">
       <div className="flex min-h-screen">
@@ -44,7 +44,7 @@ export default function AppShell() {
                 <p className="text-sm font-semibold uppercase tracking-[0.2em] text-blue-100">
                   MOTORWAY
                 </p>
-                <p className="text-xs text-blue-200/70">Fuel Station</p>
+                <p className="text-xs text-blue-200/70">{state.station.name || "Fuel Station"}</p>
               </div>
             </div>
             <nav className="space-y-2">

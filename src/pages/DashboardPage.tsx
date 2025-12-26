@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { LineChart, AlertTriangle } from "lucide-react";
 import { useStore } from "../store/StoreContext";
 import { calculateProfit, computeAlerts, dailySales, stockValue } from "../utils/calculations";
 
 export default function DashboardPage() {
-  const { state } = useStore();
+  const { state, dispatch } = useStore();
   const today = new Date().toISOString().slice(0, 10);
   const todaySales = dailySales(state, today);
   const totalSales = todaySales.reduce((sum, sale) => sum + sale.totalAmount, 0);
@@ -12,6 +12,16 @@ export default function DashboardPage() {
   const profit = calculateProfit(state);
   const alerts = computeAlerts(state);
   const stockVal = stockValue(state);
+  const [stationName, setStationName] = useState(state.station.name);
+  const [stationLocation, setStationLocation] = useState(state.station.location);
+  const [stationPhone, setStationPhone] = useState(state.station.phone);
+
+  const handleStationSave = () => {
+    dispatch({
+      type: "UPDATE_STATION",
+      payload: { name: stationName, location: stationLocation, phone: stationPhone },
+    });
+  };
 
   return (
     <div className="space-y-6">
@@ -70,6 +80,65 @@ export default function DashboardPage() {
                 {alert}
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="glass-card p-6 space-y-3">
+          <h2 className="text-sm font-semibold">Station Profile</h2>
+          <input
+            className="w-full rounded-xl border border-white/70 bg-white/70 px-3 py-2"
+            value={stationName}
+            onChange={(event) => setStationName(event.target.value)}
+            placeholder="Station name"
+          />
+          <input
+            className="w-full rounded-xl border border-white/70 bg-white/70 px-3 py-2"
+            value={stationLocation}
+            onChange={(event) => setStationLocation(event.target.value)}
+            placeholder="Location"
+          />
+          <input
+            className="w-full rounded-xl border border-white/70 bg-white/70 px-3 py-2"
+            value={stationPhone}
+            onChange={(event) => setStationPhone(event.target.value)}
+            placeholder="Phone"
+          />
+          <button
+            className="rounded-2xl bg-royal px-4 py-2 text-sm font-semibold text-white"
+            onClick={handleStationSave}
+          >
+            Save Profile
+          </button>
+        </div>
+
+        <div className="glass-card p-6">
+          <h2 className="text-sm font-semibold">Financial Snapshot</h2>
+          <p className="text-xs text-slate-500">Live totals from transactions</p>
+          <div className="mt-4 space-y-3 text-sm">
+            <div className="flex items-center justify-between">
+              <span>Total sales</span>
+              <span className="font-semibold">PKR {totalSales.toLocaleString()}</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Total cost</span>
+              <span className="font-semibold">
+                PKR {state.sales.reduce((sum, sale) => sum + sale.costAmount, 0).toLocaleString()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Expenses</span>
+              <span className="font-semibold">
+                PKR {state.expenses.reduce((sum, exp) => sum + exp.amount, 0).toLocaleString()}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Profit</span>
+              <span className="font-semibold text-emerald-600">
+                PKR {profit.toLocaleString()}
+              </span>
+            </div>
           </div>
         </div>
       </section>

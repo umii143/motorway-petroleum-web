@@ -1,6 +1,11 @@
 import { AppState } from "./types";
 
 export const initialState: AppState = {
+  station: {
+    name: "",
+    location: "",
+    phone: "",
+  },
   tanks: [],
   nozzles: [],
   products: [],
@@ -18,6 +23,11 @@ export const initialState: AppState = {
 
 export function seedDemoData(): AppState {
   return {
+    station: {
+      name: "MOTORWAY Fuel Station",
+      location: "Islamabad Motorway M-2",
+      phone: "+92 300 1234567",
+    },
     tanks: [
       {
         id: "tank-petrol",

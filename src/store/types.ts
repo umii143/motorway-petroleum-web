@@ -108,6 +108,11 @@ export interface LossAdjustment {
 }
 
 export interface AppState {
+  station: {
+    name: string;
+    location: string;
+    phone: string;
+  };
   tanks: Tank[];
   nozzles: Nozzle[];
   products: Product[];
@@ -125,6 +130,8 @@ export interface AppState {
 
 export type Action =
   | { type: "SEED"; payload: AppState }
+  | { type: "RESET"; payload: AppState }
+  | { type: "UPDATE_STATION"; payload: AppState["station"] }
   | { type: "ADD_TANK"; payload: Tank }
   | { type: "ADD_NOZZLE"; payload: Nozzle }
   | { type: "ADD_PRODUCT"; payload: Product }
@@ -140,5 +147,4 @@ export type Action =
   | { type: "UPDATE_METER"; payload: { nozzleId: string; meterClosing: number } }
   | { type: "ADD_EMPLOYEE"; payload: Employee }
   | { type: "ADD_ATTENDANCE"; payload: { employeeId: string; attendance: Attendance } }
-  | { type: "ADD_LOSS"; payload: LossAdjustment }
-  | { type: "RESET" };
+  | { type: "ADD_LOSS"; payload: LossAdjustment };
