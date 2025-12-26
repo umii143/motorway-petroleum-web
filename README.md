@@ -1,2 +1,18 @@
-# motorway-petroleum-web
-This is fuel station management system
+# MOTORWAY Fuel Station
+
+Hyper-premium fuel station management system web app.
+
+## Getting Started
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the local Vite URL shown in the terminal.
+
+## Vercel Deployment
+
+- Framework: Vite
+- Build Command: `npm run build`
+- Output Directory: `dist`
